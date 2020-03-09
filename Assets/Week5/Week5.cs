@@ -44,7 +44,66 @@ public class Week5 : MonoBehaviour
 
     private List<Player> CSVParser(TextAsset toParse)
     {
-        return new List<Player>();
+        var toReturn = new List<Player>();
+
+        var lines = toParse.text.Split('\n');
+
+        for (var i = 1; i < lines.Length; i++)
+        {
+            var splitLine = lines[i].Split(',');
+            if (splitLine.Length != 11) continue;
+
+            var toAdd = new Player();
+
+            toAdd.name = splitLine[0];
+
+            switch (splitLine[1].ToUpper())
+            {
+                case "MONK":
+                    toAdd.classType = Player.Class.Monk;
+                    break;
+                case "WIZARD":
+                    toAdd.classType = Player.Class.Wizard;
+                    break;
+                case "DRUID":
+                    toAdd.classType = Player.Class.Druid;
+                    break;
+                case "THIEF":
+                    toAdd.classType = Player.Class.Thief;
+                    break;
+                case "SORCERER":
+                    toAdd.classType = Player.Class.Sorcerer;
+                    break;
+            }
+
+            uint value;
+            if (uint.TryParse(splitLine[2], out value))
+                toAdd.maxHealth = value;
+
+            //Alive,Location
+
+            toAdd.stats = new[]
+            {
+                int.Parse(splitLine[3]),
+                int.Parse(splitLine[4]),
+                int.Parse(splitLine[5]),
+                int.Parse(splitLine[6]),
+                int.Parse(splitLine[7]),
+            };
+
+            toAdd.alive = splitLine[8].ToUpper() == "TRUE"
+                          || splitLine[8] == "YES"
+                          || splitLine[8] == "T";
+
+            var x = float.Parse(splitLine[9].Remove(0, 1));
+            var y = float.Parse(splitLine[10].Remove(splitLine[10].Length - 2, 2));
+            
+            toAdd.location = new Vector2(x, y);
+            
+            toReturn.Add(toAdd);
+        }
+        
+        return toReturn;
     }
 
     /*
@@ -60,12 +119,34 @@ public class Week5 : MonoBehaviour
 
     public int NumberAboveScore(TextAsset jsonFile, int score)
     {
-        return 0;
+        var parsed = JSON.Parse(jsonFile.text);
+
+        var toReturn = 0;
+        
+        foreach (JSONNode item in parsed["highScores"])
+        {
+            if (item["score"] > score)
+                toReturn++;
+        }
+
+        return toReturn;
     }
 
     public string GetHighScoreName(TextAsset jsonFile)
     {
-        return "";
+        var parsed = JSON.Parse(jsonFile.text);
+
+        var toReturn = parsed["highScores"][0];
+        
+        foreach (JSONNode item in parsed["highScores"])
+        {
+            if (item["score"] > toReturn["score"])
+                toReturn = item;
+        }
+
+        return toReturn["player"];
+        
+        
     }
     
     // =========================== DON'T EDIT BELOW THIS LINE =========================== //

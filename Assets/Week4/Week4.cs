@@ -7,7 +7,7 @@ using TMPro;
 using Random = UnityEngine.Random;
 
 [ExecuteInEditMode]
-public class Week1 : MonoBehaviour
+public class Week4 : MonoBehaviour
 {
     /*
      * Create a function that helps takes in four bytes (a, b, c, d), and returns an integer that represents those four
@@ -22,12 +22,12 @@ public class Week1 : MonoBehaviour
 
     private int BytesToInt(byte a, byte b, byte c, byte d)
     {
-        return 0;
+        return a * PowerOfTwo(24) + b * PowerOfTwo(16) + c * PowerOfTwo(8) + d;
     }
 
-    private int PowerOfTwo(int power)
+    private int PowerOfTwo(int power) // 2 ^ 16
     {
-        return 0;
+        return 1 << (power);
     }
 
     /*
@@ -46,23 +46,42 @@ public class Week1 : MonoBehaviour
 
     public int SmallestPrimeFactor(int input)
     {
-        return 0;
+        for (var i = 2; i < input; i++)
+        {
+            if (input % i == 0)
+                return i;
+        }
+        
+        return input;
     }
 
     public int NumberOfDigits(int input)
     {
-        return 0;
+        var positiveInput = Mathf.Abs(input);
+        var stringInput = positiveInput.ToString();
+        
+        return stringInput.Length;
     }
 
     // Imagine this is your "Start()" function
     public void Initialize()
     {
-        
+        currentFunction = NumberOfDigits;
     }
 
     public int ChangingFunction(int input)
     {
-        return 0;
+        var toReturn = currentFunction(input);
+
+        //currentFunction?.Invoke(input);
+        
+        if (toReturn == 3)
+        {
+            currentFunction = SmallestPrimeFactor;
+            // toReturn = currentFunction(input);
+        }
+        
+        return toReturn;
     }
     
     
@@ -73,6 +92,7 @@ public class Week1 : MonoBehaviour
     private void Update()
     {
         bytesToIntTest.text = "Bytes to Int\n<align=left>\n";
+        Debug.Log(BytesToInt(0, 0, 1, 0));
         
         bytesToIntTest.text += Success(BytesToInt(0, 0, 1, 0) == 256) + " Correct for (0, 0, 1, 0).\n";
         bytesToIntTest.text += Success(BytesToInt(0, 42, 1, 0) == 2752768) + " Correct for (0, 42, 1, 0).\n";
