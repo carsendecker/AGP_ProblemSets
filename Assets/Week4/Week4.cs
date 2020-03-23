@@ -7,7 +7,7 @@ using TMPro;
 using Random = UnityEngine.Random;
 
 [ExecuteInEditMode]
-public class Week1 : MonoBehaviour
+public class Week4 : MonoBehaviour
 {
     /*
      * Create a function that helps takes in four bytes (a, b, c, d), and returns an integer that represents those four
@@ -15,9 +15,9 @@ public class Week1 : MonoBehaviour
      *
      * For example:
      *     - If you got in (1, 1, 1, 1), you would return 00000001 00000001 00000001 00000001, or 16843009.
-     *     - (2, 1, 1, 1)     =>     00000010 00000001 00000001 00000001     =>    33620225 
+     *     - (2, 1, 1, 1)     =>     00000010 00000001 00000001 00000001     =>    33620225
      *     - (0, 0, 1, 0)     =>     00000000 00000000 00000001 00000000     =>    256
-     * 
+     *
      */
 
     private int BytesToInt(byte a, byte b, byte c, byte d)
@@ -28,13 +28,13 @@ public class Week1 : MonoBehaviour
         convertedInt += b << 16;
         convertedInt += c << 8;
         convertedInt += d;
-        
+
         return convertedInt;
     }
 
-    private int PowerOfTwo(int power)
+    private int PowerOfTwo(int power) // 2 ^ 16
     {
-        return 0;
+        return 1 << (power);
     }
 
     /*
@@ -45,7 +45,7 @@ public class Week1 : MonoBehaviour
      * Use the function "Initialize()" if you have anything that needs to be reset - treat it like a start function.
      *
      * Assume number of digits always gets a positive number.
-     * 
+     *
      */
 
     delegate int MathFunction(int input);
@@ -79,7 +79,7 @@ public class Week1 : MonoBehaviour
     {
         int num = input;
         int digits = 0;
-        
+
         while (num != 0)
         {
             num /= 10;
@@ -105,11 +105,11 @@ public class Week1 : MonoBehaviour
             currentFunction = SmallestPrimeFactor;
             functionSwapped = true;
         }
-        
+
         return answer;
     }
-    
-    
+
+
     // =========================== DON'T EDIT BELOW THIS LINE =========================== //
 
     public TextMeshProUGUI bytesToIntTest, delegateTest;
@@ -117,12 +117,13 @@ public class Week1 : MonoBehaviour
     private void Update()
     {
         bytesToIntTest.text = "Bytes to Int\n<align=left>\n";
-        
+        Debug.Log(BytesToInt(0, 0, 1, 0));
+
         bytesToIntTest.text += Success(BytesToInt(0, 0, 1, 0) == 256) + " Correct for (0, 0, 1, 0).\n";
         bytesToIntTest.text += Success(BytesToInt(0, 42, 1, 0) == 2752768) + " Correct for (0, 42, 1, 0).\n";
         bytesToIntTest.text += Success(BytesToInt(1, 1, 1, 1) == 16843009) + " Correct for (1, 1, 1, 1).\n";
         bytesToIntTest.text += Success(BytesToInt(2, 1, 1, 1) == 33620225) + " Correct for (2, 1, 1, 1).\n";
-        
+
         delegateTest.text = "Delegate Test\n<align=left>\n";
 
         delegateTest.text +=
@@ -131,7 +132,7 @@ public class Week1 : MonoBehaviour
         delegateTest.text +=
             Success(SmallestPrimeFactor(4) == 2 && SmallestPrimeFactor(17) == 17 && SmallestPrimeFactor(95) == 5) +
             " Smallest prime number is correct.\n";
-        
+
         Initialize();
         delegateTest.text +=
             Success(ChangingFunction(12) == 2 && ChangingFunction(39243) == 5 &&
