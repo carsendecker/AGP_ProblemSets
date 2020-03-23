@@ -22,7 +22,14 @@ public class Week1 : MonoBehaviour
 
     private int BytesToInt(byte a, byte b, byte c, byte d)
     {
-        return 0;
+        int convertedInt = 0;
+
+        convertedInt += a << 24;
+        convertedInt += b << 16;
+        convertedInt += c << 8;
+        convertedInt += d;
+        
+        return convertedInt;
     }
 
     private int PowerOfTwo(int power)
@@ -46,23 +53,60 @@ public class Week1 : MonoBehaviour
 
     public int SmallestPrimeFactor(int input)
     {
-        return 0;
+        //Goes through all numbers less than input to see if they are prime, first prime found is smallest factor
+        for (int primeCheck = 2; primeCheck <= input; primeCheck++)
+        {
+            bool isPrime = true;
+            //Checks all the numbers less than current check to see if they are a factor
+            for (int factor = 2; factor < primeCheck; factor++)
+            {
+                if (primeCheck % factor == 0)
+                {
+                    isPrime = false;
+                    break;
+                }
+            }
+
+            if (isPrime && input % primeCheck == 0)
+            {
+                return primeCheck;
+            }
+        }
+        return 1;
     }
 
     public int NumberOfDigits(int input)
     {
-        return 0;
+        int num = input;
+        int digits = 0;
+        
+        while (num != 0)
+        {
+            num /= 10;
+            digits++;
+        }
+        return digits;
     }
 
+    private bool functionSwapped;
     // Imagine this is your "Start()" function
     public void Initialize()
     {
-        
+        currentFunction = NumberOfDigits;
+        functionSwapped = false;
     }
 
     public int ChangingFunction(int input)
     {
-        return 0;
+        int answer = currentFunction(input);
+
+        if (!functionSwapped && answer == 3)
+        {
+            currentFunction = SmallestPrimeFactor;
+            functionSwapped = true;
+        }
+        
+        return answer;
     }
     
     

@@ -44,7 +44,55 @@ public class Week5 : MonoBehaviour
 
     private List<Player> CSVParser(TextAsset toParse)
     {
-        return new List<Player>();
+        List<Player> playerList = new List<Player>();
+        string[] players = toParse.text.Split('\n');
+        
+        foreach (string player in players)
+        {
+            if(player.Equals(players[0])) continue;
+
+            Player newPlayer = new Player();
+            newPlayer.stats = new int[5];
+            
+            string[] values = player.Split(',');
+            for (int i = 0; i < values.Length; i++)
+            {
+                switch (i)
+                {
+                    case 0:
+                        newPlayer.name = values[i];
+                        break;
+                    case 1:
+                        Player.Class.TryParse(values[i], out newPlayer.classType);
+                        break;
+                    case 2:
+                        newPlayer.maxHealth = uint.Parse(values[i]);
+                        break;
+                    case 3: 
+                    case 4:
+                    case 5:
+                    case 6:
+                    case 7:
+                        newPlayer.stats[i - 3] = int.Parse(values[i]);
+                        break;
+                    case 8:
+                        newPlayer.alive = bool.Parse(values[i]);
+                        break;
+                    case 9:
+                        values[i] = values[i].Remove(0, 1);
+                        newPlayer.location.x = float.Parse(values[i]);
+                        break;
+                    case 10:
+                        values[i] = values[i].Remove(values[i].Length - 2, 1);
+                        newPlayer.location.y = float.Parse(values[i]);
+                        break;
+                }
+            }
+            playerList.Add(newPlayer);
+
+        }
+        
+        return playerList;
     }
 
     /*
@@ -60,12 +108,36 @@ public class Week5 : MonoBehaviour
 
     public int NumberAboveScore(TextAsset jsonFile, int score)
     {
-        return 0;
+        JSONNode players = JSON.Parse(jsonFile.text)["highScores"];
+        
+        int scoresAbove = 0;
+        for (int i = 0; i < players.Count; i++)
+        {
+            if (players[i]["score"].AsInt > score)
+                scoresAbove++;
+            
+        }
+        
+        return scoresAbove;
     }
 
     public string GetHighScoreName(TextAsset jsonFile)
     {
-        return "";
+        JSONNode players = JSON.Parse(jsonFile.text)["highScores"];
+        
+        int highestScore = 0;
+        string scoreName = "";
+        
+        for (int i = 0; i < players.Count; i++)
+        {
+            if (players[i]["score"].AsInt > highestScore)
+            {
+                scoreName = players[i]["player"];
+            }
+
+        }
+        
+        return scoreName;
     }
     
     // =========================== DON'T EDIT BELOW THIS LINE =========================== //
