@@ -35,12 +35,44 @@ public class Week6 : MonoBehaviour
 
     public IEnumerator NumberAboveScore(string URL, int score)
     {
-        yield return 0;
+        UnityWebRequest web = UnityWebRequest.Get(URL);
+        yield return web.SendWebRequest();
+        string jsonFile = web.downloadHandler.text;
+        
+        JSONNode players = JSON.Parse(jsonFile)["highScores"];
+
+        int scoresAbove = 0;
+        for (int i = 0; i < players.Count; i++)
+        {
+            if (players[i]["score"].AsInt > score)
+                scoresAbove++;
+
+        }
+
+        yield return scoresAbove;
     }
 
     public IEnumerator GetHighScoreName(string URL)
     {
-        yield return "";
+        UnityWebRequest web = UnityWebRequest.Get(URL);
+        yield return web.SendWebRequest();
+        string jsonFile = web.downloadHandler.text;
+        
+        JSONNode players = JSON.Parse(jsonFile)["highScores"];
+
+        int highestScore = 0;
+        string scoreName = "";
+
+        for (int i = 0; i < players.Count; i++)
+        {
+            if (players[i]["score"].AsInt > highestScore)
+            {
+                scoreName = players[i]["player"];
+            }
+
+        }
+
+        yield return scoreName;
     }
     
     /*
@@ -52,7 +84,15 @@ public class Week6 : MonoBehaviour
 
     public IEnumerator CheckServerAvailability(string URL, Action onSuccess, Action onFailure)
     {
-        yield return null;
+        UnityWebRequest web = UnityWebRequest.Get(URL);
+        yield return web.SendWebRequest();
+        
+        string response = web.downloadHandler.text;
+
+        if (response.Equals("available"))
+            onSuccess();
+        else
+            onFailure();
     }
     
     /*
@@ -64,12 +104,21 @@ public class Week6 : MonoBehaviour
 
     public Func<string, string> StringReverser()
     {
-        return a => { return a; };
+        return (string a) =>
+        {
+            char[] chars = a.ToCharArray();
+            Array.Reverse(chars);
+            string reversed = new string (chars);
+            return reversed;
+        };
     }
 
     public Action<TextMeshProUGUI> AddSuccess()
     {
-        return tmp => { tmp.text += "<color=\"red\">FAIL</color> doesn't successfully add a line about successfully adding a line."; };
+        return tmp =>
+        {
+            tmp.text += "<color=\"green\">PASS</color> successfully added a line about successfully adding a line.";
+        };
     }
     
     // =========================== DON'T EDIT BELOW THIS LINE =========================== //
