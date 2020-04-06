@@ -21,24 +21,64 @@ public class Week7 : MonoBehaviour
     // Return the reversed version of the input.
     public string ReverseString(string toReverse)
     {
-        return "";
+        return ReverseString(toReverse, "");
+    }
+
+    private string ReverseString(string toReverse, string newString)
+    {
+        if (toReverse.Length == 0)
+            return newString;
+
+        char nextChar = toReverse[toReverse.Length - 1];
+
+        return ReverseString(toReverse.Remove(toReverse.Length - 1), newString += nextChar);
     }
 
     // Return whether or not the string is a palindrome
     public bool IsPalindrome(string toCheck)
     {
+        if(ReverseString(toCheck).ToLower().Equals(toCheck.ToLower()))
+            return true;
+        
         return false;
     }
 
+    List<string> charStrings = new List<string>();
     // Return all strings that can be made from the set characters using all characters.
     public string[] AllStringsFromCharacters(params char[] characters)
     {
-        return new string[0];
+        //**Got kinda stuck on this one, ended up putting myself in a weird corner and have worked on it for a while so im just leaving it unfinished in shame**
+        charStrings.Clear();
+        //Commented out so the other tests will work
+        // AllStringsFromCharacters(characters.ToString(), "");
+        return charStrings.ToArray();
+    }
+
+    private void AllStringsFromCharacters(string characters, string currentStr)
+    {
+        if (characters.Length == 0)
+            charStrings.Add(currentStr);
+        
+        for(int i = 1; i <= characters.Length; i++)
+        {
+            AllStringsFromCharacters(characters.Substring(0, i)
+                                     + characters.Substring(i, characters.Length - i),currentStr + characters[i-1]);
+        }
+        
+        
     }
 
     public int SumOfAllNumbers(params int[] numbers)
     {
-        return 0;
+        return SumOfAllNumbers(numbers, 0);
+    }
+
+    private int SumOfAllNumbers(int[] numbers, int index)
+    {
+        if (index >= numbers.Length)
+            return 0;
+        
+        return numbers[index] + SumOfAllNumbers(numbers, ++index);
     }
 
     /*
@@ -51,8 +91,16 @@ public class Week7 : MonoBehaviour
 
     public int TotalCansPurchasable(float money, float price, float canRefund)
     {
-        return 0;
+        return TotalCansPurchasable(money, price, canRefund, 0);
     }
+
+    private int TotalCansPurchasable(float money, float price, float canRefund, int cansBought)
+    {
+        if (money < price) return cansBought;
+
+        return TotalCansPurchasable((money - price) + canRefund, price, canRefund, ++cansBought);
+    }
+    
     
     // =========================== DON'T EDIT BELOW THIS LINE =========================== //
 
