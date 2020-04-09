@@ -157,9 +157,28 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Callbacks
+  m_text: 'Add as Child
 
     <align=left>
+
+    <color="green">PASS</color> add as
+    child works correctly if can''t find number.
+
+    <color="red">FAIL</color> adds
+    child correctly.
+
+
+    </align>Depth of Number
+
+    <align=left>
+
+    <color="red">FAIL</color>
+    finds depth 0 correctly.
+
+    <color="red">FAIL</color> finds depth 1 correctly.
+
+    <color="green">PASS</color>
+    returns correctly when number not in tree.
 
 '
   m_isRightToLeft: 0
@@ -231,12 +250,12 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 159642896}
-    characterCount: 11
+    characterCount: 223
     spriteCount: 0
-    spaceCount: 2
-    wordCount: 1
+    spaceCount: 41
+    wordCount: 38
     linkCount: 0
-    lineCount: 2
+    lineCount: 10
     pageCount: 1
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
@@ -336,7 +355,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Week 7 Assignment
+  m_text: Week 9 Assignment
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1d26e07fac901459abb6ca7b75c94567, type: 2}
   m_sharedMaterial: {fileID: 21021748947663650, guid: 1d26e07fac901459abb6ca7b75c94567,
@@ -641,18 +660,25 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Recursion Problems
+  m_text: 'Contains Number
 
     <align=left>
 
-    <color="green">PASS</color>
-    string reverser worked correctly.
+    <color="red">FAIL</color> returns
+    true correctly.
 
-    <color="green">PASS</color> palindrome
-    test worked correctly.
+    <color="green">PASS</color> returns false correctly.
 
-    <color="green">PASS</color> palindrome test worked
-    correctly.
+
+    </align>Contains
+    Duplicates
+
+    <align=left>
+
+    <color="green">PASS</color> correct for tree
+    without duplicates.
+
+    <color="red">FAIL</color> correct for tree with duplicates.
 
 '
   m_isRightToLeft: 0
@@ -724,12 +750,12 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 943144729}
-    characterCount: 137
+    characterCount: 179
     spriteCount: 0
-    spaceCount: 18
-    wordCount: 17
+    spaceCount: 27
+    wordCount: 24
     linkCount: 0
-    lineCount: 5
+    lineCount: 9
     pageCount: 1
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
@@ -866,8 +892,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 2126408953}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c12c479e90f744a4931aaadca92306d, type: 3}
+  m_Script: {fileID: 11500000, guid: 3066daaa4ad5842899926f6f412cce23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  recursionTest: {fileID: 943144729}
-  sodaTest: {fileID: 159642896}
+  left: {fileID: 943144729}
+  right: {fileID: 159642896}
