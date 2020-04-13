@@ -5,45 +5,86 @@ Make a function for each of the below.
 You can run this script by calling either "python Week8.py" (Mac/Linux) or "py Week8.py" (Windows) from
 a command line interface once you've navigated to the correct folder.
 
-cd (change directory) 
-	EX: cd Desktop/AGP_ProblemSets/Week8/ 
-ls (list current directory) 
+cd (change directory)
+	EX: cd Desktop/AGP_ProblemSets/Week8/
+ls (list current directory)
 
 """
 
 # Return true if even, false if odd
 def isEven(input) :
-	# put your code here.
+	if (input % 2 == 0):
+		return True
 	return False
 
 
 # Return the product of the input and all positive integers below it.
 def factorial(input) :
-	# put your code here.
-	return -1
+	num = input;
+	for x in range(input - 1, 0, -1):
+		num *= x
+
+	return num
 
 # Given a list of numbers, return the difference between the largest and smallest.
 def widthOfList(input) :
-	# put your code here.
-	return -1
+	smallest = input[0]
+	largest = input[0]
+
+	for x in input:
+		if(x > largest):
+			largest = x;
+		if(x < smallest):
+			smallest = x;
+
+	return largest - smallest;
 
 """
 
 Write a function that takes in a number and determines whether it's the same upside down.
 
-6090609		True 
+6090609		True
 6996		False 		(becomes 9669)
 806908		True
 
 """
 def sameUpsideDown(input) :
-	# put your code here.
+	acceptedNumbers = ['0', '6', '8', '9']
+	digitStr = str(input)
+	index = 0;
+	length = len(digitStr)
+
+	for i in range(length / 2):
+		num = digitStr[i]
+
+		if num not in acceptedNumbers:
+			return False
+
+		if num == '6' and digitStr[length - 1 - i] != '9':
+			return False
+		if num == '9' and digitStr[length - 1 - i] != '6':
+			return False
+
 	return True
 
 
 # Read the provided list of words, write to "output.txt" all words of given length that start with that letter.
 def allWordsOfLength(length, startingLetter) :
-	# put your code here.
+	list = [];
+
+	file = open("wordlist.txt", "r")
+
+	for word in file:
+		if len(word.strip()) == length and word.startswith(startingLetter):
+			list.append(word);
+	file.close();
+
+	output = open("output.txt", "w")
+	for word in list:
+		output.write(word)
+
+	output.close();
+
 	return 0
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
@@ -92,14 +133,13 @@ printTest(check(sameUpsideDown(806908)) + 'for 806908.')
 
 printTest("\nWords of Length Test:", bcolors.HEADER)
 allWordsOfLength(2, 'E')
-with open('output.txt') as filehandle : 
+with open('output.txt') as filehandle :
 	printTest(check(len(filehandle.readlines()) == 1) + 'found all 2 letter words starting with E.')
 
 allWordsOfLength(3, 'A')
-with open('output.txt') as filehandle : 
+with open('output.txt') as filehandle :
 	printTest(check(len(filehandle.readlines()) == 7) + 'found all 3 letter words starting with A.')
 
 allWordsOfLength(6, 'E')
-with open('output.txt') as filehandle : 
+with open('output.txt') as filehandle :
 	printTest(check(len(filehandle.readlines()) == 36) + 'found all 6 letter words starting with E.')
-
