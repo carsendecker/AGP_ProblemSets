@@ -16,8 +16,8 @@ public class Week9 : MonoBehaviour
 
     public class Node
     {
-        public List<Node> children = new List<Node>();
-        public int value = -1;
+        public List<Node> children;
+        public int value;
 
         public Node(int value, params Node[] children)
         {
@@ -29,12 +29,41 @@ public class Week9 : MonoBehaviour
     // write a function that returns true if a tree contains a number, false if it doesn't.
     public bool ContainsNumber(Node root, int number)
     {
+        if (number == root.value)
+        {
+            return true;
+        }
+
+        foreach (var child in root.children)
+        {
+            if (ContainsNumber(child, number))
+                return true;
+        }
+        
         return false;
     }
 
     // write a function that returns true if the tree contains duplicates, false if not.
     public bool ContainsDuplicates(Node root)
     {
+        var values = new HashSet<int>();
+
+        return DuplicateRecursive(root, values);
+    }
+
+    public bool DuplicateRecursive(Node root, HashSet<int> values)
+    {
+        if (values.Contains(root.value))
+            return true;
+
+        values.Add(root.value);
+
+        foreach (var child in root.children)
+        {
+            if (DuplicateRecursive(child, values))
+                return true;
+        }
+
         return false;
     }
 
@@ -42,6 +71,18 @@ public class Week9 : MonoBehaviour
     // return false if you can't find the node to add to, true if you successfully add it.
     public bool AddAsChild(Node root, int toAddTo, int numberToAdd)
     {
+        if (root.value == toAddTo)
+        {
+            root.children.Add(new Node(numberToAdd));
+            return true;
+        }
+
+        foreach (var child in root.children)
+        {
+            if (AddAsChild(child, toAddTo, numberToAdd))
+                return true;
+        }
+        
         return false;
     }
     
@@ -49,6 +90,24 @@ public class Week9 : MonoBehaviour
     // be 1, and so on.  Return -1 if it can't find the number in the tree.
     public int DepthOfNumber(Node root, int number)
     {
+        var depth = 0;
+        return RecursiveDepth(root, number, depth);
+    }
+
+    public int RecursiveDepth(Node root, int number, int depth)
+    {
+        if (root.value == number)
+        {
+            return depth;
+        }
+
+        foreach (var child in root.children)
+        {
+            var returnedDepth = RecursiveDepth(child, number, depth + 1);
+            if (returnedDepth >= 0)
+                return returnedDepth;
+        }
+
         return -1;
     }
     
@@ -63,7 +122,7 @@ public class Week9 : MonoBehaviour
 
         
         left.text =  "Contains Number\n<align=left>\n";
-        left.text += Success(ContainsNumber(simpleTree, 5)) + " returns true correctly.\n";
+        left.text += Success(ContainsNumber(simpleTree, 6)) + " returns true correctly.\n";
         left.text += Success(!ContainsNumber(simpleTree, 8)) + " returns false correctly.\n";
         left.text +=  "\n</align>Contains Duplicates\n<align=left>\n";
         left.text += Success(!ContainsDuplicates(simpleTree)) + " correct for tree without duplicates.\n";
