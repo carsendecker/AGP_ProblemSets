@@ -29,12 +29,29 @@ public class Week9 : MonoBehaviour
     // write a function that returns true if a tree contains a number, false if it doesn't.
     public bool ContainsNumber(Node root, int number)
     {
+        foreach (Node child in root.children)
+        {
+            if (child.value == number) return true;
+            if (ContainsNumber(child, number)) return true;
+        }
         return false;
     }
 
     // write a function that returns true if the tree contains duplicates, false if not.
     public bool ContainsDuplicates(Node root)
     {
+        //Not a binary tree? This function seems kinda "yikes" with a general tree
+        return ContainsDuplicatesR(root, root.value);
+    }
+
+    private bool ContainsDuplicatesR(Node root, int value)
+    {
+        foreach (Node child in root.children)
+        {
+            if (child.value == value) return true;
+            //just gonna leave this here in mild confusion, haven't really done this for non-binary trees
+        }
+
         return false;
     }
 
@@ -42,6 +59,17 @@ public class Week9 : MonoBehaviour
     // return false if you can't find the node to add to, true if you successfully add it.
     public bool AddAsChild(Node root, int toAddTo, int numberToAdd)
     {
+        if (root.value == toAddTo)
+        {
+            root.children.Add(new Node(numberToAdd));
+            return true;
+        }
+        
+        foreach (Node child in root.children)
+        {
+            return AddAsChild(child, toAddTo, numberToAdd);
+        }
+        
         return false;
     }
     
@@ -49,6 +77,18 @@ public class Week9 : MonoBehaviour
     // be 1, and so on.  Return -1 if it can't find the number in the tree.
     public int DepthOfNumber(Node root, int number)
     {
+        return DepthOfNumberR(root, number, 0);
+    }
+
+    private int DepthOfNumberR(Node root, int number, int depth)
+    {
+        if (root.value == number) return depth;
+
+        foreach (Node child in root.children)
+        {
+            return DepthOfNumberR(child, number, ++depth);
+        }
+
         return -1;
     }
     
